@@ -1,7 +1,7 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2012, Red Hat, Inc. and/or its affiliates, and individual
- * contributors by the @authors tag. See the copyright.txt in the 
+ * Copyright 2015, Red Hat, Inc. and/or its affiliates, and individual
+ * contributors by the @authors tag. See the copyright.txt in the
  * distribution for a full listing of individual contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -9,7 +9,7 @@
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,  
+ * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -23,22 +23,22 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
-import javax.persistence.NoResultException;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
-import javax.validation.ValidationException;
-import javax.validation.Validator;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Inject;
+import jakarta.persistence.NoResultException;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.ValidationException;
+import jakarta.validation.Validator;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
 import org.jboss.as.quickstarts.kitchensink.data.MemberRepository;
 import org.jboss.as.quickstarts.kitchensink.model.Member;
@@ -52,7 +52,7 @@ import org.jboss.as.quickstarts.kitchensink.service.MemberRegistration;
 @Path("/members")
 @RequestScoped
 public class MemberResourceRESTService {
-    
+
     @Inject
     private Logger log;
 
@@ -106,12 +106,12 @@ public class MemberResourceRESTService {
             builder = createViolationResponse(ce.getConstraintViolations());
         } catch (ValidationException e) {
             // Handle the unique constrain violation
-            Map<String, String> responseObj = new HashMap<String, String>();
+            Map<String, String> responseObj = new HashMap<>();
             responseObj.put("email", "Email taken");
             builder = Response.status(Response.Status.CONFLICT).entity(responseObj);
         } catch (Exception e) {
             // Handle generic exceptions
-            Map<String, String> responseObj = new HashMap<String, String>();
+            Map<String, String> responseObj = new HashMap<>();
             responseObj.put("error", e.getMessage());
             builder = Response.status(Response.Status.BAD_REQUEST).entity(responseObj);
         }
@@ -128,7 +128,7 @@ public class MemberResourceRESTService {
      * If the error is caused because an existing member with the same email is registered it throws a regular validation
      * exception so that it can be interpreted separately.
      * </p>
-     * 
+     *
      * @param member Member to be validated
      * @throws ConstraintViolationException If Bean Validation errors exist
      * @throws ValidationException If member with the same email already exists
@@ -138,7 +138,7 @@ public class MemberResourceRESTService {
         Set<ConstraintViolation<Member>> violations = validator.validate(member);
 
         if (!violations.isEmpty()) {
-            throw new ConstraintViolationException(new HashSet<ConstraintViolation<?>>(violations));
+            throw new ConstraintViolationException(new HashSet<>(violations));
         }
 
         // Check the uniqueness of the email address
@@ -150,14 +150,14 @@ public class MemberResourceRESTService {
     /**
      * Creates a JAX-RS "Bad Request" response including a map of all violation fields, and their message. This can then be used
      * by clients to show violations.
-     * 
+     *
      * @param violations A set of violations that needs to be reported
      * @return JAX-RS response containing all violations
      */
     private Response.ResponseBuilder createViolationResponse(Set<ConstraintViolation<?>> violations) {
         log.fine("Validation completed. violations found: " + violations.size());
 
-        Map<String, String> responseObj = new HashMap<String, String>();
+        Map<String, String> responseObj = new HashMap<>();
 
         for (ConstraintViolation<?> violation : violations) {
             responseObj.put(violation.getPropertyPath().toString(), violation.getMessage());
@@ -169,7 +169,7 @@ public class MemberResourceRESTService {
     /**
      * Checks if a member with the same email address is already registered. This is the only way to easily capture the
      * "@UniqueConstraint(columnNames = "email")" constraint from the Member class.
-     * 
+     *
      * @param email The email to check
      * @return True if the email already exists, and false otherwise
      */

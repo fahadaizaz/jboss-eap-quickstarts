@@ -1,7 +1,7 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2012, Red Hat, Inc. and/or its affiliates, and individual
- * contributors by the @authors tag. See the copyright.txt in the 
+ * Copyright 2015, Red Hat, Inc. and/or its affiliates, and individual
+ * contributors by the @authors tag. See the copyright.txt in the
  * distribution for a full listing of individual contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -9,7 +9,7 @@
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,  
+ * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -19,14 +19,15 @@ package org.jboss.as.quickstarts.wshelloworld;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.jws.WebService;
+import jakarta.jws.WebService;
 
 /**
  * The implementation of the HelloWorld JAX-WS Web Service.
- * 
+ *
  * @author lnewson@redhat.com
  */
-@WebService(serviceName = "HelloWorldService", portName = "HelloWorld", name = "HelloWorld", endpointInterface = "org.jboss.as.quickstarts.wshelloworld.HelloWorldService", targetNamespace = "http://www.jboss.org/jbossas/quickstarts/wshelloworld/HelloWorld")
+@WebService(serviceName = "HelloWorldService", portName = "HelloWorld", name = "HelloWorld", endpointInterface = "org.jboss.as.quickstarts.wshelloworld.HelloWorldService",
+    targetNamespace = "http://www.jboss.org/eap/quickstarts/wshelloworld/HelloWorld")
 public class HelloWorldServiceImpl implements HelloWorldService {
 
     @Override
@@ -38,7 +39,7 @@ public class HelloWorldServiceImpl implements HelloWorldService {
     public String sayHelloToName(final String name) {
 
         /* Create a list with just the one value */
-        final List<String> names = new ArrayList<String>();
+        final List<String> names = new ArrayList<>();
         names.add(name);
 
         return sayHelloToNames(names);
@@ -52,9 +53,9 @@ public class HelloWorldServiceImpl implements HelloWorldService {
     /**
      * Creates a list of names separated by commas or an and symbol if its the last separation. This is then used to say hello to
      * the list of names.
-     * 
+     *
      * i.e. if the input was {John, Mary, Luke} the output would be John, Mary & Luke
-     * 
+     *
      * @param names A list of names
      * @return The list of names separated as described above.
      */
